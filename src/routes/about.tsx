@@ -6,18 +6,9 @@ export const Route = createFileRoute('/about')({
 
 function About() {
   return (
-    <main class="page-wrap px-4 py-12">
-      <section class="island-shell rounded-2xl p-6 sm:p-8">
-        <p class="island-kicker mb-2">About</p>
-        <h1 class="display-title mb-3 text-4xl font-bold text-[var(--sea-ink)] sm:text-5xl">
-          A small starter with room to grow.
-        </h1>
-        <p class="m-0 max-w-3xl text-base leading-8 text-[var(--sea-ink-soft)]">
-          TanStack Start gives you type-safe routing, server functions, and
-          modern SSR defaults. Use this as a clean foundation, then layer in
-          your own routes, styling, and add-ons.
-        </p>
-      </section>
-    </main>
+    <div class="crew-products-heading">
+      <h2>Products</h2>
+      <span class="crew-product-description">Crew Fireworks delivers fireworks fast to your door. Choose from a wide variety of products that hands down deliver bright colors, impressive effects and stunning prices. Add your choice of products to one of our Shows and automatically get free shipping. See policies.</span>
+    </div>
   )
 }

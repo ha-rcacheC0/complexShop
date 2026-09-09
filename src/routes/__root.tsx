@@ -1,4 +1,4 @@
-import { ClerkProvider } from 'clerk-solidjs'
+
 import {
   HeadContent,
   Outlet,
@@ -12,7 +12,7 @@ import { Suspense } from 'solid-js'
 
 import Header from '../components/Header'
 
-import styleCss from '../styles.css?url'
+import styleCss from '../styles/index.css?url'
 
 export const Route = createRootRouteWithContext()({
   head: () => ({
@@ -41,15 +41,13 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body>
-      <ClerkProvider
-          publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}
-        >
+
         <Suspense>
           <Header />
           <Outlet />
           <TanStackRouterDevtools />
         </Suspense>
-        </ClerkProvider>
+
         <Scripts />
       </body>
     </html>
