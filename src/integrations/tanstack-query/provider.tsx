@@ -1,8 +1,19 @@
-import { QueryClient } from '@tanstack/solid-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/solid-query'
+
+export const queryClient = new QueryClient()
 
 export function getContext() {
-  const queryClient = new QueryClient()
   return {
     queryClient,
   }
+}
+
+export function TanStackQueryProvider(props: {
+  children: any
+}) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {props.children}
+    </QueryClientProvider>
+  )
 }

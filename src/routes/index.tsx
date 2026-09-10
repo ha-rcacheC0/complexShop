@@ -1,21 +1,86 @@
 import { createFileRoute } from '@tanstack/solid-router'
+import { createQuery } from '@tanstack/solid-query'
 
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createFileRoute('/')({
+  component: App,
+})
+
+async function getSession() {
+  const response = await fetch('/api/auth/get-session', {
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to get session')
+  }
+
+  return response.json()
+}
 
 function App() {
+  const sessionQuery = createQuery(() => ({
+    queryKey: ['session'],
+    queryFn: getSession,
+  }))
+
   return (
     <main class="page-wrap px-4 pb-8 pt-14">
       <section class="island-shell rise-in relative overflow-hidden rounded-[2rem] px-6 py-10 sm:px-10 sm:py-14">
         <div class="pointer-events-none absolute -left-20 -top-24 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(79,184,178,0.32),transparent_66%)]" />
         <div class="pointer-events-none absolute -bottom-20 -right-20 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(47,106,74,0.18),transparent_66%)]" />
-        <p class="island-kicker mb-3">TanStack Start Base Template</p>
-        <h1 class="display-title mb-5 max-w-3xl text-4xl leading-[1.02] font-bold tracking-tight text-[var(--sea-ink)] sm:text-6xl">
-          Start simple, ship quickly.
-        </h1>
-        <p class="mb-8 max-w-2xl text-base text-[var(--sea-ink-soft)] sm:text-lg">
-          This base starter intentionally keeps things light: two routes, clean
-          structure, and the essentials you need to build from scratch.
-        </p>
+
+        {sessionQuery.isPending ? (
+          <>
+            <p class="island-kicker mb-3">Account</p>
+
+            <h1 class="display-title mb-5 max-w-3xl text-4xl leading-[1.02] font-bold tracking-tight text-[var(--sea-ink)] sm:text-6xl">
+              Loading...
+            </h1>
+
+            <p class="mb-8 max-w-2xl text-base text-[var(--sea-ink-soft)] sm:text-lg">
+              Checking your account session.
+            </p>
+          </>
+        ) : sessionQuery.error ? (
+          <>
+            <p class="island-kicker mb-3">Account</p>
+
+            <h1 class="display-title mb-5 max-w-3xl text-4xl leading-[1.02] font-bold tracking-tight text-[var(--sea-ink)] sm:text-6xl">
+              Unable to load session
+            </h1>
+
+            <p class="mb-8 max-w-2xl text-base text-[var(--sea-ink-soft)] sm:text-lg">
+              There was a problem checking your account.
+            </p>
+          </>
+        ) : sessionQuery.data?.user ? (
+          <>
+            <p class="island-kicker mb-3">Welcome back</p>
+
+            <h1 class="display-title mb-5 max-w-3xl text-4xl leading-[1.02] font-bold tracking-tight text-[var(--sea-ink)] sm:text-6xl">
+              Welcome, {sessionQuery.data.user.name}
+            </h1>
+
+            <p class="mb-8 max-w-2xl text-base text-[var(--sea-ink-soft)] sm:text-lg">
+              You are signed in to your account.
+            </p>
+          </>
+        ) : (
+          <>
+            <p class="island-kicker mb-3">TanStack Start Base Template</p>
+
+            <h1 class="display-title mb-5 max-w-3xl text-4xl leading-[1.02] font-bold tracking-tight text-[var(--sea-ink)] sm:text-6xl">
+              Start simple, ship quickly.
+            </h1>
+
+            <p class="mb-8 max-w-2xl text-base text-[var(--sea-ink-soft)] sm:text-lg">
+              This base starter intentionally keeps things light: two routes,
+              clean structure, and the essentials you need to build from
+              scratch.
+            </p>
+          </>
+        )}
+
         <div class="flex flex-wrap gap-3">
           <a
             href="/about"
@@ -23,6 +88,7 @@ function App() {
           >
             About This Starter
           </a>
+
           <a
             href="https://tanstack.com/router"
             target="_blank"
@@ -60,6 +126,7 @@ function App() {
             <h2 class="mb-2 text-base font-semibold text-[var(--sea-ink)]">
               {title}
             </h2>
+
             <p class="m-0 text-sm text-[var(--sea-ink-soft)]">{desc}</p>
           </article>
         ))}
@@ -67,14 +134,17 @@ function App() {
 
       <section class="island-shell mt-8 rounded-2xl p-6">
         <p class="island-kicker mb-2">Quick Start</p>
+
         <ul class="m-0 list-disc space-y-2 pl-5 text-sm text-[var(--sea-ink-soft)]">
           <li>
             Edit <code>src/routes/index.tsx</code> to customize the home page.
           </li>
+
           <li>
             Update <code>src/components/Header.tsx</code> for navigation and
             product links.
           </li>
+
           <li>
             Add routes in <code>src/routes</code> and tweak visual tokens in{' '}
             <code>src/styles.css</code>.

@@ -8,7 +8,6 @@
     "build": "bun --bun vite build",
     "start": "node .output/server/index.mjs",
     "preview": "bun --bun vite preview",
-    "format": "biome format",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

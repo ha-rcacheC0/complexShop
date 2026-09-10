@@ -1,4 +1,3 @@
-
 import {
   HeadContent,
   Outlet,
@@ -11,6 +10,7 @@ import { HydrationScript } from 'solid-js/web'
 import { Suspense } from 'solid-js'
 
 import Header from '../components/Header'
+import { TanStackQueryProvider } from '../integrations/tanstack-query/provider'
 
 import styleCss from '../styles/index.css?url'
 
@@ -25,7 +25,7 @@ export const Route = createRootRouteWithContext()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'complexShop',
       },
     ],
     links: [{ rel: 'stylesheet', href: styleCss }],
@@ -41,12 +41,13 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body>
-
+        <TanStackQueryProvider>
         <Suspense>
           <Header />
           <Outlet />
           <TanStackRouterDevtools />
         </Suspense>
+        </TanStackQueryProvider>
 
         <Scripts />
       </body>
