@@ -15,6 +15,17 @@ import { TanStackQueryProvider } from '../integrations/tanstack-query/provider'
 import styleCss from '../styles/index.css?url'
 
 export const Route = createRootRouteWithContext()({
+  notFoundComponent: () => (
+    <div class="mx-auto max-w-3xl px-6 py-16 text-center">
+      <h1 class="text-3xl font-bold text-[var(--sea-ink)]">
+        Page Not Found
+      </h1>
+  
+      <p class="mt-3 text-[var(--sea-ink-soft)]">
+        The page you requested does not exist.
+      </p>
+    </div>
+  ),
   head: () => ({
     meta: [
       {

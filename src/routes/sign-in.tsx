@@ -11,6 +11,7 @@ export const Route = createFileRoute('/sign-in')({
 function SignInPage() {
   const navigate = useNavigate()
   const [serverError, setServerError] = createSignal('')
+  const [googleLoading, setGoogleLoading] = createSignal(false)
 
   const form = createForm(() => ({
     defaultValues: {
@@ -48,6 +49,33 @@ function SignInPage() {
     },
   }))
 
+  async function handleGoogleSignIn() {
+    setServerError('')
+    setGoogleLoading(true)
+
+    try {
+      const result = await authClient.signIn.social({
+        provider: 'google',
+        callbackURL: '/',
+      })
+
+      console.log('GOOGLE SIGN IN RESULT:', result)
+
+      if (result.error) {
+        setServerError(
+          result.error.message ?? 'Unable to sign in with Google.',
+        )
+        setGoogleLoading(false)
+      }
+    } catch (error) {
+      console.error('GOOGLE SIGN IN ERROR:', error)
+      setServerError(
+        'Something went wrong during Google sign in.',
+      )
+      setGoogleLoading(false)
+    }
+  }
+
   return (
     <main class="demo-page demo-center">
       <section class="demo-panel w-full max-w-md">
@@ -61,6 +89,27 @@ function SignInPage() {
           <p class="demo-muted mt-2">
             Sign in with your email and password.
           </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleGoogleSignIn}
+          disabled={googleLoading()}
+          class="demo-button w-full"
+        >
+          {googleLoading()
+            ? 'Connecting to Google...'
+            : 'Continue with Google'}
+        </button>
+
+        <div class="my-6 flex items-center gap-3">
+          <div class="h-px flex-1 bg-[var(--line)]" />
+
+          <span class="text-sm text-[var(--sea-ink-soft)]">
+            or
+          </span>
+
+          <div class="h-px flex-1 bg-[var(--line)]" />
         </div>
 
         <form
